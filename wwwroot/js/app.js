@@ -101,7 +101,7 @@ function createParticles() {
         particle.style.left = `${Math.random() * 100}%`;
         particle.style.animationDuration = `${7 + Math.random() * 12}s`;
         particle.style.animationDelay = `${Math.random() * 10}s`;
-        particle.style.opacity = `${0.2 + Math.random() * 0.5}`;
+        particle.style.setProperty("--drift", `${-60 + Math.random() * 160}px`);
 
         const size = 1 + Math.random() * 3;
 
@@ -130,8 +130,8 @@ function initializeWeapon() {
         const x = (event.clientX - rect.left) / rect.width;
         const y = (event.clientY - rect.top) / rect.height;
 
-        const rotateY = (x - 0.5) * 13;
-        const rotateX = (0.5 - y) * 9;
+        const rotateY = (x - 0.5) * 18;
+        const rotateX = (0.5 - y) * 12;
 
         weapon.style.animation = "none";
 
@@ -263,8 +263,6 @@ function renderDashboard(data) {
     }
 
     animateNumber($("elo"), data.elo);
-    animateNumber($("levelText"), data.level, "");
-
     if ($("levelText")) {
         $("levelText").textContent =
             data.level !== null && data.level !== undefined
@@ -379,6 +377,72 @@ function initializeNavigation() {
     });
 }
 
+/* TYPEWRITER */
+
+function initializeTypewriter() {
+    const el = $("typewriter");
+
+    if (!el) return;
+
+    const text = el.dataset.text || el.textContent;
+
+    el.textContent = "";
+
+    let i = 0;
+
+    setTimeout(function tick() {
+        el.textContent = text.slice(0, ++i);
+
+        if (i < text.length) setTimeout(tick, 38);
+    }, 900);
+}
+
+/* CURSOR GLOW */
+
+function initializeCursorGlow() {
+    const glow = $("cursorGlow");
+
+    if (!glow) return;
+
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
+
+    let x = 0, y = 0, tx = 0, ty = 0;
+
+    window.addEventListener("mousemove", (event) => {
+        tx = event.clientX;
+        ty = event.clientY;
+        glow.classList.add("on");
+    });
+
+    document.addEventListener("mouseleave", () => glow.classList.remove("on"));
+
+    (function loop() {
+        x += (tx - x) * 0.12;
+        y += (ty - y) * 0.12;
+        glow.style.transform = `translate(${x}px, ${y}px)`;
+        requestAnimationFrame(loop);
+    })();
+}
+
+/* LIGHTNING */
+
+function initializeLightning() {
+    const bolt = $("lightning");
+
+    if (!bolt) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    (function schedule() {
+        setTimeout(() => {
+            bolt.classList.remove("flash");
+            void bolt.offsetWidth;
+            bolt.classList.add("flash");
+            schedule();
+        }, 7000 + Math.random() * 11000);
+    })();
+}
+
 /* START */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -388,6 +452,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeScrollAnimations();
     initializeRefresh();
     initializeNavigation();
+    initializeTypewriter();
+    initializeCursorGlow();
+    initializeLightning();
 
     loadDashboard();
 

@@ -1,33 +1,47 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#090909">
+    <meta name="theme-color" content="#040605">
     <title>VEERO — FACEIT Dashboard</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Rajdhani:wght@500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/site.css">
 </head>
 
 <body>
 
+<!-- ЗАГРУЗЧИК -->
 <div class="page-loader" id="pageLoader">
-    <div class="loader-logo">V</div>
+    <div class="loader-sigil">
+        <svg viewBox="0 0 120 120" aria-hidden="true">
+            <circle cx="60" cy="60" r="54" class="ls-ring"/>
+            <circle cx="60" cy="60" r="44" class="ls-ring ls-dash"/>
+            <path d="M32 34 L60 92 L88 34 L74 34 L60 64 L46 34 Z" class="ls-v"/>
+        </svg>
+    </div>
     <div class="loader-line"><span></span></div>
-    <div class="loader-caption">INITIALIZING VEERO SYSTEM</div>
+    <div class="loader-caption glitch" data-text="BOW BEFORE VEERO">BOW BEFORE VEERO</div>
 </div>
 
+<!-- ФОН -->
 <div class="background-effects">
+    <div class="bg-art"></div>
     <div class="bg-grid"></div>
     <div class="bg-glow bg-glow-one"></div>
     <div class="bg-glow bg-glow-two"></div>
+    <div class="fog fog-one"></div>
+    <div class="fog fog-two"></div>
     <div class="particles" id="particles"></div>
+    <div class="lightning" id="lightning"></div>
+    <div class="vignette"></div>
+    <div class="scanlines"></div>
 </div>
+<div class="cursor-glow" id="cursorGlow"></div>
 
 <header class="topbar">
     <a href="#" class="brand">
@@ -57,19 +71,19 @@
         <div class="hero-content">
             <div class="hero-kicker">
                 <span class="kicker-line"></span>
-                COUNTER-STRIKE 2 / PLAYER PROFILE
+                <span id="typewriter" data-text="COUNTER-STRIKE 2 / SOVEREIGN PROFILE">COUNTER-STRIKE 2 / SOVEREIGN PROFILE</span>
             </div>
 
-            <h1 class="hero-title">
-                PLAY<br>
-                <span>WITHOUT</span><br>
-                LIMITS<span class="orange-dot">.</span>
+            <h1 class="hero-title glitch" data-text="RULE">
+                <span class="t-line">RULE</span>
+                <span class="t-line t-outline">WITHOUT</span>
+                <span class="t-line">MERCY<span class="accent-dot">.</span></span>
             </h1>
 
             <p class="hero-description">
-                TRACK YOUR PERFORMANCE.<br>
-                ANALYZE EVERY MATCH.<br>
-                OWN THE GAME.
+                EVERY ROUND IS A DECREE.<br>
+                EVERY KILL IS A VERDICT.<br>
+                THE SERVER BOWS TO VEERO.
             </p>
 
             <div class="hero-player">
@@ -79,7 +93,7 @@
                 </div>
 
                 <div class="player-details">
-                    <div class="player-label">CURRENT PLAYER</div>
+                    <div class="player-label">CURRENT SOVEREIGN</div>
                     <div class="player-name" id="nickname">VEERO</div>
                     <div class="player-game">COUNTER-STRIKE 2</div>
                 </div>
@@ -87,73 +101,80 @@
 
             <div class="hero-bottom">
                 <span class="hero-line"></span>
-                <span>EST. PERFORMANCE MONITORING</span>
+                <span>ABSOLUTE PERFORMANCE MONITORING</span>
             </div>
         </div>
 
         <div class="weapon-stage" id="weaponStage">
             <div class="weapon-light"></div>
-            <div class="weapon-circle"></div>
 
             <div class="weapon-label weapon-label-top">
-                <span>01</span> — COMBAT PROFILE
+                <span>01</span> — SIGIL OF COMMAND
             </div>
 
+            <!-- Оригинальная эмблема-печать (без чужих персонажей) -->
             <div class="weapon-art" id="weaponArt">
-                <svg viewBox="0 0 1000 420" role="img" aria-label="Stylized rifle illustration">
+                <svg viewBox="0 0 500 500" role="img" aria-label="Sigil emblem">
                     <defs>
-                        <linearGradient id="gunMetal" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stop-color="#77716a"/>
-                            <stop offset="35%" stop-color="#292725"/>
-                            <stop offset="70%" stop-color="#111111"/>
-                            <stop offset="100%" stop-color="#51463b"/>
+                        <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#8d9a93"/>
+                            <stop offset="45%" stop-color="#2b332f"/>
+                            <stop offset="100%" stop-color="#0c100e"/>
                         </linearGradient>
-                        <linearGradient id="gunOrange" x1="0" y1="0" x2="1" y2="1">
-                            <stop offset="0%" stop-color="#ff9b37"/>
-                            <stop offset="100%" stop-color="#e8440a"/>
+                        <linearGradient id="toxic" x1="0" y1="0" x2="1" y2="1">
+                            <stop offset="0%" stop-color="#8dffbd"/>
+                            <stop offset="100%" stop-color="#14b85a"/>
                         </linearGradient>
-                        <filter id="gunShadow">
-                            <feGaussianBlur stdDeviation="12"/>
+                        <radialGradient id="core" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" stop-color="#3dff8a" stop-opacity=".55"/>
+                            <stop offset="100%" stop-color="#3dff8a" stop-opacity="0"/>
+                        </radialGradient>
+                        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                            <feGaussianBlur stdDeviation="6" result="b"/>
+                            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
                         </filter>
                     </defs>
 
-                    <ellipse cx="510" cy="350" rx="400" ry="25" fill="#000" opacity=".7" filter="url(#gunShadow)"/>
+                    <circle cx="250" cy="250" r="230" fill="url(#core)"/>
 
-                    <g transform="translate(15 10) rotate(-7 500 210)">
-                        <path d="M110 170 L330 170 L365 205 L340 245 L135 235 L95 210 Z"
-                              fill="url(#gunMetal)" stroke="#777" stroke-width="4"/>
-                        <path d="M125 175 L310 180 L325 205 L140 207 Z" fill="#171717"/>
-                        <path d="M330 177 L710 177 L755 205 L710 245 L350 245 L320 215 Z"
-                              fill="url(#gunMetal)" stroke="#777" stroke-width="4"/>
-                        <path d="M700 190 L950 190 L970 205 L950 222 L700 222 Z"
-                              fill="#191919" stroke="#777" stroke-width="4"/>
-                        <path d="M950 197 L990 197 L990 215 L950 215 Z" fill="#8c8174"/>
-                        <path d="M350 245 L420 245 L405 330 L365 330 Z"
-                              fill="#24211e" stroke="#65584c" stroke-width="4"/>
-                        <path d="M470 240 L535 240 L520 320 L480 320 Z"
-                              fill="#171717" stroke="#5d5146" stroke-width="4"/>
-                        <path d="M535 240 L600 240 L590 310 L550 310 Z"
-                              fill="#2a2520" stroke="#5d5146" stroke-width="4"/>
-                        <path d="M650 240 L715 240 L700 285 L660 285 Z"
-                              fill="#151515" stroke="#6a5b4b" stroke-width="4"/>
-                        <path d="M340 170 L720 170 L720 185 L340 185 Z" fill="#8b8176"/>
-                        <path d="M360 150 L680 150 L680 170 L360 170 Z" fill="#242424" stroke="#62584e" stroke-width="3"/>
-                        <path d="M420 150 L435 130 L625 130 L640 150 Z" fill="#292929" stroke="#777" stroke-width="3"/>
-                        <path d="M435 130 L450 110 L610 110 L625 130 Z" fill="#171717" stroke="#777" stroke-width="3"/>
-                        <path d="M475 245 L490 245 L490 270 L475 270 Z" fill="url(#gunOrange)"/>
-                        <path d="M365 180 L690 180" stroke="#f36b1c" stroke-width="3" opacity=".8"/>
-                        <path d="M160 180 L160 220 M180 180 L180 220 M200 180 L200 220"
-                              stroke="#aaa" stroke-width="3" opacity=".4"/>
-                        <path d="M730 195 L925 195" stroke="#aaa" stroke-width="2" opacity=".4"/>
-                        <path d="M350 210 L700 210" stroke="#000" stroke-width="4" opacity=".7"/>
-                        <path d="M405 245 L420 245 L410 310 L395 310 Z" fill="#e65b16"/>
+                    <!-- внешнее кольцо с рунами -->
+                    <g class="sigil-spin-slow">
+                        <circle cx="250" cy="250" r="220" fill="none" stroke="#3dff8a" stroke-opacity=".25" stroke-width="1"/>
+                        <circle cx="250" cy="250" r="205" fill="none" stroke="#3dff8a" stroke-opacity=".35" stroke-width="1" stroke-dasharray="3 9"/>
+                        <g stroke="#3dff8a" stroke-opacity=".5" stroke-width="2">
+                            <path id="ticks" d="M250 24 V44 M250 456 V476 M24 250 H44 M456 250 H476"/>
+                            <path d="M90 90 L104 104 M410 90 L396 104 M90 410 L104 396 M410 410 L396 396"/>
+                        </g>
+                    </g>
+
+                    <!-- гексаграмма -->
+                    <g class="sigil-spin-rev" filter="url(#glow)">
+                        <polygon points="250,70 405,340 95,340" fill="none" stroke="url(#toxic)" stroke-width="2" opacity=".75"/>
+                        <polygon points="250,430 95,160 405,160" fill="none" stroke="url(#toxic)" stroke-width="2" opacity=".75"/>
+                    </g>
+
+                    <!-- стальной щит -->
+                    <g class="sigil-pulse">
+                        <path d="M250 110 L370 150 L360 300 Q350 370 250 410 Q150 370 140 300 L130 150 Z"
+                              fill="url(#steel)" stroke="#9aa89f" stroke-width="3"/>
+                        <path d="M250 130 L350 163 L342 296 Q334 352 250 388 Q166 352 158 296 L150 163 Z"
+                              fill="#080b0a" stroke="#3dff8a" stroke-opacity=".5" stroke-width="1.5"/>
+                        <!-- заклёпки -->
+                        <g fill="#aab6af">
+                            <circle cx="170" cy="175" r="4"/><circle cx="330" cy="175" r="4"/>
+                            <circle cx="250" cy="150" r="4"/><circle cx="250" cy="372" r="4"/>
+                        </g>
+                        <!-- буква V -->
+                        <path d="M185 205 L250 340 L315 205 L286 205 L250 282 L214 205 Z"
+                              fill="url(#toxic)" filter="url(#glow)"/>
+                        <path d="M205 190 H295" stroke="#3dff8a" stroke-opacity=".6" stroke-width="2"/>
                     </g>
                 </svg>
             </div>
 
             <div class="weapon-label weapon-label-bottom">
                 <span class="weapon-dot"></span>
-                SYSTEM ONLINE / CS2
+                THRONE ONLINE / CS2
             </div>
 
             <div class="hero-watermark">VEERO</div>
@@ -171,7 +192,7 @@
 
         <div class="section-heading">
             <div>
-                <div class="section-kicker">YOUR NUMBERS. YOUR GAME.</div>
+                <div class="section-kicker">YOUR NUMBERS. YOUR DOMINION.</div>
                 <h2>PERFORMANCE <span>OVERVIEW</span></h2>
             </div>
             <div class="section-number">01 / 03</div>
@@ -265,7 +286,7 @@
         <article class="data-panel matches-panel" id="matches">
             <div class="panel-heading">
                 <div>
-                    <div class="section-kicker">YOUR LAST GAMES</div>
+                    <div class="section-kicker">YOUR LAST CONQUESTS</div>
                     <h3>RECENT MATCHES</h3>
                 </div>
 
